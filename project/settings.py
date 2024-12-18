@@ -3,18 +3,20 @@ import os
 from environs import Env
 
 env = Env()
-env.read_env()
+env.read_env('.env.diary')
 
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', [])
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 
-SECRET_KEY = env.str('SECRET_KEY', 'REPLACE_ME')
+SECRET_KEY = env.str('SECRET_KEY')
 
-DEBUG = env.bool('DEBUG', True)
+DEBUG = env.bool('DEBUG')
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.getenv('DATABASE_NAME', 'schoolbase.sqlite3'),
+        'NAME': os.path.join(BASE_DIR + '/datacenter', os.getenv('DATABASE_NAME'))
     }
 }
 
@@ -22,7 +24,6 @@ INSTALLED_APPS = ['datacenter']
 
 ROOT_URLCONF = 'project.urls'
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
